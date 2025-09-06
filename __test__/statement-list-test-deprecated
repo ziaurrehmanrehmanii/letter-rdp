@@ -1,0 +1,112 @@
+module.exports = (test) => {
+    console.log("🔎 Running statement-list tests... ✨\n");
+
+    // Single numeric statement
+    test(`15;`, {
+        type: "Program",
+        body: [
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "NumericLiteral",
+                    value: 15,
+                },
+            },
+        ],
+    });
+
+    // Two statements: string then number
+    test(`"Hello"; 42;`, {
+        type: "Program",
+        body: [
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "StringLiteral",
+                    value: "Hello",
+                },
+            },
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "NumericLiteral",
+                    value: 42,
+                },
+            },
+        ],
+    });
+
+    // Trailing semicolon after last statement (already tests above) and extra semicolons produce empty statements
+    test(`15;;`, {
+        type: "Program",
+        body: [
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "NumericLiteral",
+                    value: 15,
+                },
+            },
+            {
+                type: "ExpressionStatement",
+                expression: null,
+            },
+        ],
+    });
+
+    // Lone semicolon -> empty statement
+    test(`;`, {
+        type: "Program",
+        body: [
+            {
+                type: "ExpressionStatement",
+                expression: null,
+            },
+        ],
+    });
+
+    // Statements with comments and whitespace
+    test(`// comment\n"Hi"; /*block*/ 7;`, {
+        type: "Program",
+        body: [
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "StringLiteral",
+                    value: "Hi",
+                },
+            },
+            {
+                type: "ExpressionStatement",
+                expression: {
+                    type: "NumericLiteral",
+                    value: 7,
+                },
+            },
+        ],
+    });
+
+    // Multiple empty statements
+    test(`;; ;`, {
+        type: "Program",
+        body: [
+            { type: "ExpressionStatement", expression: null },
+            { type: "ExpressionStatement", expression: null },
+            { type: "ExpressionStatement", expression: null },
+        ],
+    });
+
+    // Mix of empty and non-empty
+    test(`; 'ok'; ; 3;`, {
+        type: "Program",
+        body: [
+            { type: "ExpressionStatement", expression: null },
+            {
+                type: "ExpressionStatement",
+                expression: { type: "StringLiteral", value: "ok" },
+            },
+            { type: "ExpressionStatement", expression: null },
+            { type: "ExpressionStatement", expression: { type: "NumericLiteral", value: 3 } },
+        ],
+    });
+};

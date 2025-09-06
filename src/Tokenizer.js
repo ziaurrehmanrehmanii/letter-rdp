@@ -21,7 +21,14 @@ const Spec = [
   //Multi Line Comments:
   //-----------------------------
   [/^\/\*[\s\S]*?\*\//, null],
+
+  //Symbols: delimiters and operators
+  //-----------------------------
+  [/^;/, ";"],
+  [/^{/, "{"],
+  [/^}/, "}"],
 ];
+
 
 /**
  * Tokenizer class

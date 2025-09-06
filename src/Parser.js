@@ -29,18 +29,92 @@ class Parser {
   }
 
   /**
-   * Main entry Point
-   *
-   * Program
-   *  :Literal
-   *  ;
-   */
+    * Main entry Point
+    *
+    * Program
+    *  :Literal
+    *  ;
+  */
   Program() {
+    // Program now contains a StatementList so multiple expressions
+    // (ExpressionStatement) can be represented as an array of statements.
     return {
       type: "Program",
-      body: this.Literal(),
+      body: this.StatementList(),
     };
   }
+  /**
+   * StatementList
+   *  : Statement
+   *  | StatementList Statement -> Statement Statement Statement Statement
+   *  ;
+   */
+  StatementList(stopLookahead = null) {
+    // Allow zero or more statements. This also makes empty input valid
+    // and supports consecutive semicolons (empty statements).
+    const statementList = [this.Statement()];
+    while (this._lookahead != null && this._lookahead.type !== stopLookahead) {
+      statementList.push(this.Statement());
+    }
+
+    return statementList;
+  }
+  /**
+   * Statement
+   *  : ExpressionStatement;
+   *  | BlockStatement
+   *  ;
+   */
+  Statement() {
+    // Support empty statements: a bare `;` should produce an EmptyStatement
+    // if (this._lookahead && this._lookahead.type === ";") {
+    //   this._eat(";");
+    //   return { type: "EmptyStatement" };
+    // }
+    switch (this._lookahead.type) {
+      case "{":
+        return this.BlockStatement();
+      default: return this.ExpressionStatement();
+    }
+
+  }
+  /**
+   * BlockStatement
+   *  : '{' OptStatementList '}'
+   *  ;
+   */
+  BlockStatement() {
+    this._eat("{");
+    const body = this._lookahead.type !== '}' ? this.StatementList('}') : [];
+    this._eat("}");
+    return {
+      type: "BlockStatement",
+      body,
+    };
+  }
+
+  /**
+   * ExpressionStatement
+   *  : Expression ';'
+   *  ;
+   */
+  ExpressionStatement() {
+    const expression = this.Expression();
+    this._eat(";");
+    return {
+      type: "ExpressionStatement",
+      expression
+    };
+  }
+  /**
+   * Expression
+   *  : Literal
+   *  ;
+   */
+  Expression() {
+    return this.Literal();
+  }
+
   /**
    * Literal
    *  : NumericLiteral
