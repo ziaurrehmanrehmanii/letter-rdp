@@ -10,7 +10,7 @@ const assert = require("assert");
  * that receives a single `test(program, expected)` function and calls it
  * for each case. This keeps a single place for defining tests.
  */
-const tests = [require("./literals_test"), require("./statement-list-test"), require("./block-statement-test")];
+const tests = [require("./literals_test"), require("./statement-list-test"), require("./block-statement-test"), require("./empty-statement-test")];
 
 const parser = new Parser();
 

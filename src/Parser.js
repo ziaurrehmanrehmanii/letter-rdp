@@ -50,9 +50,8 @@ class Parser {
    *  ;
    */
   StatementList(stopLookahead = null) {
-    // Allow zero or more statements. This also makes empty input valid
-    // and supports consecutive semicolons (empty statements).
-    const statementList = [this.Statement()];
+
+    const statementList = [];
     while (this._lookahead != null && this._lookahead.type !== stopLookahead) {
       statementList.push(this.Statement());
     }
@@ -63,20 +62,27 @@ class Parser {
    * Statement
    *  : ExpressionStatement;
    *  | BlockStatement
+   *  | EmptyStatement
    *  ;
    */
   Statement() {
-    // Support empty statements: a bare `;` should produce an EmptyStatement
-    // if (this._lookahead && this._lookahead.type === ";") {
-    //   this._eat(";");
-    //   return { type: "EmptyStatement" };
-    // }
+
     switch (this._lookahead.type) {
+      case ";":
+        return this.EmptyStatement();
       case "{":
         return this.BlockStatement();
       default: return this.ExpressionStatement();
     }
-
+  }
+  /**
+   * EmptyStatement
+   *  : ';'
+   *  ;
+   */
+  EmptyStatement() {
+    this._eat(";");
+    return { type: "EmptyStatement" };
   }
   /**
    * BlockStatement
