@@ -1,5 +1,5 @@
 module.exports = (test) => {
-    console.log("\u26a0\ufe0f Empty-statement tests (not registered)\n");
+    console.log("\ud83d\udd27 Running empty-statement tests...\n");
 
     // Single empty statement
     test(`;`, {
@@ -78,6 +78,7 @@ module.exports = (test) => {
             { type: "EmptyStatement" },
             { type: "EmptyStatement" },
             { type: "BlockStatement", body: [{ type: "ExpressionStatement", expression: { type: "NumericLiteral", value: 1 } }] },
+            { type: "EmptyStatement" },
         ],
     });
 };

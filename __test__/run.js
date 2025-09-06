@@ -10,7 +10,7 @@ const assert = require("assert");
  * that receives a single `test(program, expected)` function and calls it
  * for each case. This keeps a single place for defining tests.
  */
-const tests = [require("./literals_test"), require("./statement-list-test"), require("./block-statement-test"), require("./empty-statement-test")];
+const tests = [require("./literals_test"), require("./math_test"), require("./statement-list-test"), require("./block-statement-test"), require("./empty-statement-test"), require("./math_parentheses")];
 
 const parser = new Parser();
 
@@ -47,7 +47,7 @@ function exec(input) {
   }
 }
 // Example manual run (safe: parse errors are caught and won't crash the test runner)
-// exec(`;`);
+// exec(`()`);
 
 // CLI: allow running a manual snippet with -m "your code"
 const argv = process.argv.slice(2);
