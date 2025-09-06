@@ -51,10 +51,8 @@ class Parser {
     switch (this._lookahead.type) {
       case "NUMBER":
         return this.NumericLiteral();
-      case "D_STRING":
-        return this.D_StringLiteral();
-      case "S_STRING":
-        return this.S_StringLiteral();
+      case "STRING":
+        return this.StringLiteral();
     }
     throw new SyntaxError(`Literal: unexpected literal production`);
   }
@@ -72,26 +70,13 @@ class Parser {
   }
   /**
    * Double Quot StringLiteral
-   * :D_String
+   * :String
    * ;
    */
-  D_StringLiteral() {
-    const token = this._eat("D_STRING");
+  StringLiteral() {
+    const token = this._eat("STRING");
     return {
-      type: "D_StringLiteral",
-      value: token.value.slice(1, -1),
-    };
-  }
-
-  /**
-   * Single Quot StringLiteral
-   * :S_String
-   * ;
-   */
-  S_StringLiteral() {
-    const token = this._eat("S_STRING");
-    return {
-      type: "S_StringLiteral",
+      type: "StringLiteral",
       value: token.value.slice(1, -1),
     };
   }

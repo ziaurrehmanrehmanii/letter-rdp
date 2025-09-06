@@ -35,39 +35,32 @@ class Tokenizer {
     }
 
     const string = this._string.slice(this._cursor);
+
+    let matched = /^\d+/.exec(string);
     // Numbers:
-    if (!Number.isNaN(Number(string[0]))) {
-      let number = "";
-      while (!Number.isNaN(Number(string[this._cursor]))) {
-        number += string[this._cursor++];
-      }
+    if (matched !== null) {
+      this._cursor += matched[0].length;
       return {
         type: "NUMBER",
-        value: number,
+        value: matched[0],
       };
     }
-    //  Double Quot Strings:
-    if (string[0] === '"') {
-      let s = '';
-      do {
-        s += string[this._cursor++];
-      } while (string[this._cursor] !== '"' && !this.isEOF());
-      s += this._cursor++; //skip ""
+    // Strings:
+    matched = /"[^"]*"/.exec(string);
+    if (matched !== null) {
+      this._cursor += matched.length;
       return {
-        type: "D_STRING",
-        value: s,
+        type: "STRING",
+        value: matched[0],
       };
     }
     //  Single Quot Strings:
-    if (string[0] === `'`) {
-      let s = ``;
-      do {
-        s += string[this._cursor++];
-      } while (string[this._cursor] !== `'` && !this.isEOF());
-      s += this._cursor++; //skip ""
+    matched = /'[^']*'/.exec(string);
+    if (matched !== null) {
+      this._cursor += matched.length;
       return {
-        type: "S_STRING",
-        value: s,
+        type: "STRING",
+        value: matched[0],
       };
     }
   }
