@@ -1,4 +1,23 @@
 /**
+ * Tokenizer spec.
+ */
+const Spec = [
+  //Numbers:
+  [/^\d+/, "NUMBER"],
+  //Strings:
+  [/^"[^"]*"/, "STRING"],
+  [/^'[^']*'/, "STRING"],
+
+  // Skip tokens
+  //Whitespace:
+  [/^\s+/, null],
+  //Single Line Comments:
+  [/^\/\/.*/, null],
+  //Multi Line Comments:
+  [/^\/\*[\s\S]*?\*\//, null],
+];
+
+/**
  * Tokenizer class
  *
  * Lazily pulls a token from a stream
@@ -35,35 +54,34 @@ class Tokenizer {
     }
 
     const string = this._string.slice(this._cursor);
+    for (const [regexp, tokenType] of Spec) {
+      const tokenValue = this._match(regexp, string);
+      if (tokenValue == null) {
+        continue;
+      }
+      //should skip token, e.g.whitespace
+      if (tokenType == null) {
+        return this.getNextToken();
+      }
+      //return token
+      return { type: tokenType, value: tokenValue[0] };
+    }
+    throw new SyntaxError(`Unexpected token ${string[0]} `);
+  }
 
-    let matched = /^\d+/.exec(string);
-    // Numbers:
-    if (matched !== null) {
-      this._cursor += matched[0].length;
-      return {
-        type: "NUMBER",
-        value: matched[0],
-      };
+  /**
+   *
+   * Matches a regexp from the current cursor position
+   * If matched, advances the cursor
+   * Otherwise, returns null
+   */
+  _match(regexp, string) {
+    const matched = regexp.exec(string);
+    if (matched == null) {
+      return null;
     }
-    // Strings:
-    matched = /"[^"]*"/.exec(string);
-    if (matched !== null) {
-      this._cursor += matched.length;
-      return {
-        type: "STRING",
-        value: matched[0],
-      };
-    }
-    //  Single Quot Strings:
-    matched = /'[^']*'/.exec(string);
-    if (matched !== null) {
-      this._cursor += matched.length;
-      return {
-        type: "STRING",
-        value: matched[0],
-      };
-    }
+    this._cursor += matched[0].length;
+    return matched;
   }
 }
-
-module.exports = { Tokenizer };
+module.exports = { Tokenizer, Spec };

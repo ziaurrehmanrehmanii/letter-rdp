@@ -2,7 +2,7 @@
  * @module Parser
  * Letter Parser: recursive descent implementation
  */
-const { Tokenizer } = require("./Tokenizer");
+const { Tokenizer, Spec } = require("./Tokenizer");
 class Parser {
   /**
    * Initializes the parser
