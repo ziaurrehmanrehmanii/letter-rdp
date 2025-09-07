@@ -9,6 +9,9 @@ const Spec = [
   //-----------------------------
   [/^"[^"]*"/, "STRING"],
   [/^'[^']*'/, "STRING"],
+  //Identifiers:
+  //-----------------------------
+  [/^[A-Za-z_]\w*/, "IDENTIFIER"],
 
   // Skip tokens
   //-----------------------------
@@ -31,8 +34,18 @@ const Spec = [
   [/^\)/, ")"],
 
   //Operators:
+  //-----------------------------
+  // Assignment complex forms first so we don't split e.g. '+=' into '+' and '='
+  [/^[\*\/\+\-]=/, "COMPLEX_ASSIGN"],
+  //Math:
+  //-----------------------------
   [/^[+\-]/, "ADDITIVE_OPERATOR"],
   [/^[*\/]/, "MULTIPLICATIVE_OPERATOR"],
+  // Simple assignment
+  [/^=/, "SIMPLE_ASSIGN"],
+
+
+
 
 ];
 
