@@ -9,6 +9,38 @@ const Spec = [
   //-----------------------------
   [/^"[^"]*"/, "STRING"],
   [/^'[^']*'/, "STRING"],
+  // Commas:
+  //-----------------------------
+  [/^,/, ","],
+
+  // Keywords:
+  //-----------------------------
+  // Variable declaration: let
+  [/^\blet\b/, "let"],
+
+  // Control flow: if, else
+  [/^\bif\b/, "if"],
+  [/^\belse\b/, "else"],
+
+  // Boolean literals: true, false
+  [/^\btrue\b/, "true"],
+  [/^\bfalse\b/, "false"],
+
+  // Null literal: null
+  [/^\bnull\b/, "null"],
+
+  //EQUALITY_OPERATOR (==, !=)
+  //-----------------------------
+  [/^==/, "EQUALITY_OPERATOR"],
+  [/^!=/, "EQUALITY_OPERATOR"],
+
+  // Unary operators
+  [/^\btypeof\b/, "typeof"],
+  [/^\bvoid\b/, "void"],
+  [/^\bdelete\b/, "delete"],
+  [/^!/, "!"],
+  [/^~/, "~"],
+
   //Identifiers:
   //-----------------------------
   [/^[A-Za-z_]\w*/, "IDENTIFIER"],
@@ -32,23 +64,35 @@ const Spec = [
   [/^}/, "}"],
   [/^\(/, "("],
   [/^\)/, ")"],
+  [/^\./, "."],
+  [/^\[/, "["],
+  [/^\]/, "]"],
 
   //Operators:
   //-----------------------------
-  // Assignment complex forms first so we don't split e.g. '+=' into '+' and '='
+  // Assignment complex
   [/^[\*\/\+\-]=/, "COMPLEX_ASSIGN"],
+  //EQUALITY_OPERATOR (==, !=)
+  //-----------------------------
+  [/^==/, "EQUALITY_OPERATOR"],
+  [/^!=/, "EQUALITY_OPERATOR"],
+  //Logical operators (&&, ||)
+  //-----------------------------
+  [/^&&/, "LOGICAL_AND"],
+  [/^\|\|/, "LOGICAL_OR"],
+  // Relational and equality operators
+  //-----------------------------
+  [/^<=/, "RELATIONAL_OPERATOR"],
+  [/^>=/, "RELATIONAL_OPERATOR"],
+  [/^</, "RELATIONAL_OPERATOR"],
+  [/^>/, "RELATIONAL_OPERATOR"],
   //Math:
   //-----------------------------
   [/^[+\-]/, "ADDITIVE_OPERATOR"],
   [/^[*\/]/, "MULTIPLICATIVE_OPERATOR"],
-  // Simple assignment
+  // Simple assignment (single '=')
   [/^=/, "SIMPLE_ASSIGN"],
-
-
-
-
 ];
-
 
 /**
  * Tokenizer class

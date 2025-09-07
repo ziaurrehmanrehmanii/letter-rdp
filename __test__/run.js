@@ -10,7 +10,24 @@ const assert = require("assert");
  * that receives a single `test(program, expected)` function and calls it
  * for each case. This keeps a single place for defining tests.
  */
-const tests = [require("./literals_test"), require("./math_test"), require("./assignment_operator_test"), require("./statement-list-test"), require("./block-statement-test"), require("./empty-statement-test"), require("./math_parentheses")];
+const tests = [
+  require("./literals_test"),
+  require("./math_test"),
+  require("./assignment_operator_test"),
+  require("./statement-list-test"),
+  require("./block-statement-test"),
+  require("./empty-statement-test"),
+  require("./math_parentheses"),
+  require("./variable_test"),
+  require("./if_statement_test"),
+  require("./logical_test"),
+  require("./unary_test"),
+];
+
+// Ensure relational tests run last regardless of edits: require and append it here
+tests.push(require("./relational_test"));
+// Run equality tests last
+tests.push(require("./equality_test"));
 
 const parser = new Parser();
 
@@ -29,7 +46,10 @@ function test(program, expected) {
  */
 function exec(input) {
   // Show a compact single-line preview of the input
-  const preview = typeof input === 'string' ? input.replace(/\n/g, ' ↩︎ ').trim() : String(input);
+  const preview =
+    typeof input === "string"
+      ? input.replace(/\n/g, " ↩︎ ").trim()
+      : String(input);
   console.log(`
 🧪 Manual exec: ${preview}
 `);
@@ -56,11 +76,13 @@ const skipSanitize = argv.includes("-sm") || argv.includes("--skip-sanitize");
 
 // Build a cleaned argv that strips the skip flag so it won't be consumed as input
 const cleanedArgv = argv.filter((a) => a !== "-sm" && a !== "--skip-sanitize");
-const manualFlagIndex = cleanedArgv.findIndex((a) => a === "-m" || a === "--manual");
+const manualFlagIndex = cleanedArgv.findIndex(
+  (a) => a === "-m" || a === "--manual"
+);
 if (manualFlagIndex !== -1) {
   const manualArgs = cleanedArgv.slice(manualFlagIndex + 1);
   if (manualArgs.length === 0) {
-    console.log("Usage: node __test__/run.js -m \"your program here\"");
+    console.log('Usage: node __test__/run.js -m "your program here"');
     process.exit(2);
   }
   const manualInput = manualArgs.join(" ");

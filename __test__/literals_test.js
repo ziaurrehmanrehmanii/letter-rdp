@@ -1,97 +1,129 @@
 module.exports = (test) => {
-    // Small banner to add some pizazz when tests are loaded
-    console.log("🔎 Running literal tests... ✨\n");
+  // Small banner to add some pizazz when tests are loaded
+  console.log("🔎 Running literal tests... ✨\n");
 
-    // NumericLiteral 🎯
-    test(`15;`, {
-        type: "Program",
-        body: [
-            {
-                type: "ExpressionStatement",
-                expression: {
-                    type: "NumericLiteral",
-                    value: 15,
-                },
-            },
-        ],
-    });
+  // NumericLiteral 🎯
+  test(`15;`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "NumericLiteral",
+          value: 15,
+        },
+      },
+    ],
+  });
 
-    // StringLiteral - double quotes 💬
-    test(`"Hello World";`, {
-        type: "Program",
-        body: [
-            {
-                type: "ExpressionStatement",
-                expression: {
-                    type: "StringLiteral",
-                    value: "Hello World",
-                },
-            },
-        ],
-    });
+  // StringLiteral - double quotes 💬
+  test(`"Hello World";`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "StringLiteral",
+          value: "Hello World",
+        },
+      },
+    ],
+  });
 
-    // StringLiteral - single quotes 📝
-    test(`'Hello World';`, {
-        type: "Program",
-        body: [
-            {
-                type: "ExpressionStatement",
-                expression: {
-                    type: "StringLiteral",
-                    value: "Hello World",
-                },
-            },
-        ],
-    });
+  // StringLiteral - single quotes 📝
+  test(`'Hello World';`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "StringLiteral",
+          value: "Hello World",
+        },
+      },
+    ],
+  });
 
-    // StringLiteral - with whitespace before ⬅️ (should ignore leading spaces)
-    test(`        "Hello World";`, {
-        type: "Program",
-        body: [
-            {
-                type: "ExpressionStatement",
-                expression: {
-                    type: "StringLiteral",
-                    value: "Hello World",
-                },
-            },
-        ],
-    });
+  // StringLiteral - with whitespace before ⬅️ (should ignore leading spaces)
+  test(`        "Hello World";`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: {
+          type: "StringLiteral",
+          value: "Hello World",
+        },
+      },
+    ],
+  });
 
-    // StringLiteral - with single line comment before 🗒️
-    test(
-        `// This is a comment
+  // StringLiteral - with single line comment before 🗒️
+  test(
+    `// This is a comment
                     "Hello World";`,
+    {
+      type: "Program",
+      body: [
         {
-            type: "Program",
-            body: [
-                {
-                    type: "ExpressionStatement",
-                    expression: {
-                        type: "StringLiteral",
-                        value: "Hello World",
-                    },
-                },
-            ],
-        }
-    );
+          type: "ExpressionStatement",
+          expression: {
+            type: "StringLiteral",
+            value: "Hello World",
+          },
+        },
+      ],
+    }
+  );
 
-    // StringLiteral - with multi line comment before 🧾
-    test(
-        `/* This is a 
+  // StringLiteral - with multi line comment before 🧾
+  test(
+    `/* This is a 
                      multi line comment */
                     "Hello World";`,
+    {
+      type: "Program",
+      body: [
         {
-            type: "Program",
-            body: [
-                {
-                    type: "ExpressionStatement",
-                    expression: {
-                        type: "StringLiteral",
-                        value: "Hello World",
-                    },
-                },
-            ],
-        }
-    );
+          type: "ExpressionStatement",
+          expression: {
+            type: "StringLiteral",
+            value: "Hello World",
+          },
+        },
+      ],
+    }
+  );
+
+  // Boolean literals
+  test(`true;`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: { type: "BooleanLiteral", value: true },
+      },
+    ],
+  });
+
+  test(`false;`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: { type: "BooleanLiteral", value: false },
+      },
+    ],
+  });
+
+  // Null literal
+  test(`null;`, {
+    type: "Program",
+    body: [
+      {
+        type: "ExpressionStatement",
+        expression: { type: "NullLiteral", value: null },
+      },
+    ],
+  });
 };
